@@ -1,9 +1,409 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My GitHub Website</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111111">
+  <meta name="description" content="Game design portfolio and selected projects.">
+  <title>Your Name | Game Designer</title>
+  <style>
+    :root {
+      --bg: #101010;
+      --panel: #181818;
+      --panel-2: #202020;
+      --text: #f4f1ea;
+      --muted: #aaa79f;
+      --accent: #c5f467;
+      --line: #343434;
+      --max: 1160px;
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    .wrap { width: min(var(--max), calc(100% - 44px)); margin-inline: auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 10; backdrop-filter: blur(16px);
+      background: rgba(16,16,16,.86); border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; min-height: 72px; gap: 20px; }
+    .brand { text-decoration: none; font-weight: 850; letter-spacing: -.04em; font-size: 1.05rem; }
+    .brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: .92rem; }
+    .nav-links a:hover { color: var(--text); }
+    .pill {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px;
+      text-decoration: none; font-size: .9rem; font-weight: 700; transition: transform .2s, background .2s;
+    }
+    .pill:hover { transform: translateY(-2px); }
+    .pill.primary { background: var(--accent); border-color: var(--accent); color: #151a0d; }
+    .hero { padding: 94px 0 76px; display: grid; grid-template-columns: 1.35fr .65fr; gap: 54px; align-items: center; }
+    .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: .17em; font-size: .75rem; font-weight: 800; }
+    h1 { font-size: clamp(3.2rem, 8vw, 6.8rem); line-height: .96; letter-spacing: -.075em; margin: 18px 0 24px; max-width: 850px; }
+    h1 em { color: var(--accent); font-style: normal; }
+    .intro { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 630px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .hero-card {
+      border: 1px solid var(--line); border-radius: 24px; padding: 25px; background:
+      radial-gradient(ellipse at 80% 0%, rgba(197,244,103,.16), transparent 48%), var(--panel);
+      min-height: 280px; display: flex; flex-direction: column; justify-content: space-between;
+    }
+    .orb { width: 88px; height: 88px; border-radius: 28px; background: var(--accent); color: #14180d; display: grid; place-items: center; font-size: 2.2rem; transform: rotate(-9deg); }
+    .hero-card strong { font-size: 1.4rem; line-height: 1.2; letter-spacing: -.04em; display: block; max-width: 220px; }
+    .hero-card p { color: var(--muted); margin-bottom: 0; font-size: .92rem; }
+    section { padding: 54px 0; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 26px; }
+    h2 { font-size: clamp(2rem, 4vw, 3.1rem); letter-spacing: -.06em; line-height: 1.05; margin: 8px 0 0; }
+    .section-note { color: var(--muted); max-width: 390px; margin: 0; }
+    .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .project-card {
+      border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+      background: var(--panel); transition: transform .22s, border-color .22s;
+    }
+    .project-card:hover { transform: translateY(-5px); border-color: #606060; }
+    .project-art {
+      aspect-ratio: 16 / 9; padding: 22px; position: relative; overflow: hidden;
+      display: flex; align-items: end; background: var(--art, linear-gradient(135deg,#384b35,#151a14));
+    }
+    .project-art::before, .project-art::after { content: ""; position: absolute; border: 1px solid rgba(255,255,255,.23); transform: rotate(-24deg); }
+    .project-art::before { width: 65%; height: 150%; right: -8%; top: -30%; border-radius: 45%; }
+    .project-art::after { width: 35%; height: 120%; right: 17%; top: -18%; border-radius: 50%; }
+    .art-mark { position: relative; z-index: 1; font-size: clamp(2rem, 5vw, 4.4rem); font-weight: 900; letter-spacing: -.09em; line-height: .9; max-width: 80%; text-shadow: 0 2px 20px rgba(0,0,0,.16); }
+    .project-content { padding: 22px; }
+    .meta { color: var(--accent); text-transform: uppercase; letter-spacing: .12em; font-size: .7rem; font-weight: 800; }
+    .project-content h3 { font-size: 1.45rem; letter-spacing: -.04em; margin: 8px 0; }
+    .project-content p { color: var(--muted); margin: 0 0 18px; }
+    .card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag { border: 1px solid var(--line); border-radius: 999px; padding: 4px 9px; color: #d2d0c9; font-size: .75rem; }
+    .text-link { color: var(--accent); font-weight: 750; text-decoration: none; white-space: nowrap; }
+    .text-link:hover { text-decoration: underline; }
+    .about-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 44px; }
+    .about-copy { color: var(--muted); font-size: 1.05rem; }
+    .skills { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
+    .skill { background: var(--panel-2); border: 1px solid var(--line); padding: 9px 12px; border-radius: 10px; font-size: .86rem; }
+    .contact-box { border: 1px solid var(--line); border-radius: 24px; padding: clamp(25px, 5vw, 54px); background: linear-gradient(135deg, rgba(197,244,103,.09), transparent 60%), var(--panel); display: flex; align-items: end; justify-content: space-between; gap: 28px; }
+    .contact-box p { color: var(--muted); max-width: 520px; }
+    footer { border-top: 1px solid var(--line); margin-top: 45px; padding: 24px 0; color: var(--muted); font-size: .85rem; }
+    .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .socials { display: flex; gap: 16px; flex-wrap: wrap; }
+    .socials a { color: var(--muted); text-decoration: none; }
+    .socials a:hover { color: var(--accent); }
+    .detail-page { display: none; min-height: 70vh; padding: 54px 0 80px; }
+    .detail-page.active { display: block; }
+    #home-page.hidden { display: none; }
+    .back-link { display: inline-block; margin-bottom: 28px; color: var(--accent); text-decoration: none; font-weight: 750; }
+    .detail-hero { padding: 35px 0 28px; }
+    .detail-hero h1 { font-size: clamp(2.8rem, 7vw, 5.5rem); }
+    .detail-description { color: var(--muted); max-width: 760px; font-size: 1.15rem; }
+    .detail-cover { border-radius: 22px; overflow: hidden; aspect-ratio: 16/7; background: var(--art); display: grid; place-items: center; margin: 28px 0 40px; }
+    .detail-cover span { font-size: clamp(2.5rem, 8vw, 7rem); font-weight: 900; letter-spacing: -.08em; text-align: center; padding: 20px; }
+    .detail-layout { display: grid; grid-template-columns: 1.4fr .6fr; gap: 45px; }
+    .detail-layout h2 { font-size: 1.6rem; margin: 28px 0 12px; }
+    .detail-layout p, .detail-layout li { color: var(--muted); }
+    .detail-layout ul { padding-left: 20px; }
+    .detail-sidebar { border: 1px solid var(--line); border-radius: 16px; padding: 22px; align-self: start; background: var(--panel); }
+    .detail-sidebar h3 { margin-top: 0; }
+    .detail-sidebar dl { margin: 0; }
+    .detail-sidebar dt { color: var(--muted); font-size: .76rem; text-transform: uppercase; letter-spacing: .1em; margin-top: 17px; }
+    .detail-sidebar dd { margin: 3px 0 0; }
+    .media-placeholder { border: 1px dashed #5b5b5b; border-radius: 16px; padding: 30px; color: var(--muted); text-align: center; background: var(--panel); }
+    .media-placeholder a { color: var(--accent); }
+    .video-frame { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 16px; background: #222; }
+    .gallery { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+    .gallery img { display: block; width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: 12px; background: var(--panel-2); }
+    .empty-gallery { grid-column: 1/-1; }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 30px, var(--max)); }
+      .nav { min-height: 64px; }
+      .nav-links { gap: 13px; }
+      .nav-links a { font-size: .82rem; }
+      .nav-links .pill { padding: 8px 11px; }
+      .hero { grid-template-columns: 1fr; padding: 65px 0 45px; gap: 28px; }
+      .hero-card { min-height: 220px; }
+      .project-grid, .about-grid, .detail-layout { grid-template-columns: 1fr; }
+      .section-head, .contact-box { align-items: start; flex-direction: column; }
+      section { padding: 40px 0; }
+    }
+    @media (max-width: 420px) {
+      .nav-links { gap: 10px; }
+      .nav-links a:first-child { display: none; }
+      .card-bottom { align-items: start; flex-direction: column; }
+    }
+  </style>
 </head>
 <body>
-    <h1>Hello World! Welcome to my GitHub website.</h1>
+  <header class="topbar">
+    <nav class="nav wrap" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="Your Name home">YOUR NAME<span>.</span></a>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a class="pill" href="#contact">Get in touch ↗</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="home-page">
+    <div class="wrap">
+      <section class="hero" id="home">
+        <div>
+          <div class="eyebrow">Game Designer · World Builder · Problem Solver</div>
+          <h1>I make games<br>that make you <em>feel.</em></h1>
+          <p class="intro">Hey, I’m <strong>Your Name</strong>, a game designer who loves building memorable experiences, meaningful mechanics, and worlds players want to get lost in.</p>
+          <div class="hero-actions">
+            <a class="pill primary" href="#projects">Explore my work ↓</a>
+            <a class="pill" href="mailto:hello@example.com">Email me ↗</a>
+          </div>
+        </div>
+        <aside class="hero-card" aria-label="Portfolio introduction">
+          <div class="orb">✳</div>
+          <div>
+            <strong>Curiosity first.<br>Player experience always.</strong>
+            <p>Selected projects, experiments, and things I’ve learned along the way.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section id="projects">
+        <div class="section-head">
+          <div><div class="eyebrow">A few things I’ve made</div><h2>Featured projects</h2></div>
+          <p class="section-note">A selection of games and design work. Pick a project to see the concept, process, and media.</p>
+        </div>
+        <div class="project-grid" id="project-grid"></div>
+      </section>
+
+      <section id="about">
+        <div class="about-grid">
+          <div><div class="eyebrow">A little about me</div><h2>Designing with<br>purpose and play.</h2></div>
+          <div>
+            <p class="about-copy">I’m a game designer interested in how systems, storytelling, level design, and player choice come together to create experiences worth remembering. I enjoy collaborating across disciplines, prototyping ideas, and iterating until the fun really clicks.</p>
+            <p class="about-copy">Outside of any one project, I’m always collecting ideas, learning new tools, and asking: “What would make this more interesting for the player?”</p>
+            <div class="skills" aria-label="Skills">
+              <span class="skill">Game design</span><span class="skill">Systems design</span>
+              <span class="skill">Level design</span><span class="skill">Narrative design</span>
+              <span class="skill">Prototyping</span><span class="skill">Playtesting</span>
+              <span class="skill">Documentation</span><span class="skill">Team collaboration</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="contact-box">
+          <div><div class="eyebrow">Have a project in mind?</div><h2>Let’s make<br>something great.</h2><p>I’m open to opportunities, collaborations, and conversations about game design. The best way to reach me is by email.</p></div>
+          <a class="pill primary" href="mailto:hello@example.com">hello@example.com ↗</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <main class="detail-page" id="project-page" aria-live="polite">
+    <div class="wrap">
+      <a class="back-link" href="#projects">← Back to all projects</a>
+      <div id="project-detail"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span>© <span id="year"></span> Your Name. Made with care.</span>
+      <div class="socials">
+        <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+        <a href="https://itch.io/" target="_blank" rel="noreferrer">itch.io ↗</a>
+        <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /*
+      QUICK CUSTOMIZATION:
+      1. Replace Your Name, your intro, email, skills, and social links in this file.
+      2. Edit the projects array below. Duplicate an object to add another project.
+      3. For a YouTube video, paste its EMBED URL, e.g. https://www.youtube.com/embed/VIDEO_ID
+      4. For images, use a relative path such as "images/my-game.jpg" or a hosted image URL.
+    */
+    const projects = [
+      {
+        id: "project-one",
+        title: "Project One",
+        type: "Game Design · Team Project",
+        short: "A short, compelling description of the game, the player fantasy, and what makes it special.",
+        description: "Introduce the project here. What is the game? What does the player do, and what feeling or experience were you aiming to create? Give visitors enough context to get excited.",
+        role: "Game Designer",
+        team: "4 people",
+        tools: "Unity, Figma, Miro",
+        duration: "8 weeks",
+        tags: ["Systems Design", "Prototyping", "Unity"],
+        art: "linear-gradient(135deg, #526c43, #17241b 75%)",
+        mark: "PROJECT<br>ONE",
+        video: "",
+        gallery: [],
+        challenge: "Describe the core design challenge. What was difficult, unclear, or not working at first?",
+        process: "Explain your approach: research, brainstorming, paper prototypes, greyboxing, playtests, iteration, or collaboration with the team.",
+        outcome: "Share the result and what you learned. Add playtest findings, measurable outcomes, feedback, or what you would improve next."
+      },
+      {
+        id: "project-two",
+        title: "Project Two",
+        type: "Level Design · Solo Project",
+        short: "A level, mechanic, or prototype that shows how you think about pacing, space, and player decisions.",
+        description: "Describe the project’s premise and the intended player experience. Explain the context and what you personally built or designed.",
+        role: "Level Designer",
+        team: "Solo",
+        tools: "Unreal Engine, Blender",
+        duration: "3 weeks",
+        tags: ["Level Design", "Environment", "Unreal"],
+        art: "linear-gradient(135deg, #8c5b4d, #351f2a 75%)",
+        mark: "PROJECT<br>TWO",
+        video: "",
+        gallery: [],
+        challenge: "What player problem or design goal shaped this project?",
+        process: "Walk through your blockout, encounter design, flow, landmarks, playtesting, and revisions.",
+        outcome: "What worked well? What did feedback teach you? What would you iterate on next?"
+      },
+      {
+        id: "project-three",
+        title: "Project Three",
+        type: "Systems Design · Prototype",
+        short: "A small experiment exploring a mechanic, progression system, or surprising player interaction.",
+        description: "Use this space to explain the core mechanic or system and why you wanted to explore it.",
+        role: "Designer & Programmer",
+        team: "2 people",
+        tools: "Godot, Figma",
+        duration: "2 weeks",
+        tags: ["Mechanics", "Balancing", "Prototype"],
+        art: "linear-gradient(135deg, #4c5e92, #1b1c3b 75%)",
+        mark: "PROJECT<br>THREE",
+        video: "",
+        gallery: [],
+        challenge: "What question did you want this experiment to answer?",
+        process: "Explain the rules you tried, the variables you changed, and how you tested the experience.",
+        outcome: "Summarize what you discovered and how the findings could influence a larger game."
+      },
+      {
+        id: "project-four",
+        title: "Project Four",
+        type: "Narrative Design · Game Jam",
+        short: "A story-driven experience built around a distinct theme, emotional beat, or creative constraint.",
+        description: "Introduce the setting, the player’s role, and the central narrative hook without spoiling anything important.",
+        role: "Narrative Designer",
+        team: "5 people",
+        tools: "Twine, Unity",
+        duration: "48-hour game jam",
+        tags: ["Narrative", "Game Jam", "Writing"],
+        art: "linear-gradient(135deg, #986b39, #3d2920 75%)",
+        mark: "PROJECT<br>FOUR",
+        video: "",
+        gallery: [],
+        challenge: "What storytelling challenge or constraint did the team face?",
+        process: "Describe how you shaped player choice, dialogue, pacing, and collaboration with the rest of the team.",
+        outcome: "Share the final result, player reactions, and the biggest lesson you took away."
+      }
+    ];
+
+    const grid = document.getElementById("project-grid");
+    const homePage = document.getElementById("home-page");
+    const projectPage = document.getElementById("project-page");
+    const detail = document.getElementById("project-detail");
+
+    function renderCards() {
+      grid.innerHTML = projects.map(project => `
+        <article class="project-card">
+          <a href="#${encodeURIComponent(project.id)}" aria-label="View ${escapeHTML(project.title)} project" style="text-decoration:none">
+            <div class="project-art" style="--art:${project.art}">
+              <div class="art-mark">${project.mark}</div>
+            </div>
+            <div class="project-content">
+              <div class="meta">${escapeHTML(project.type)}</div>
+              <h3>${escapeHTML(project.title)}</h3>
+              <p>${escapeHTML(project.short)}</p>
+              <div class="card-bottom">
+                <div class="tags">${project.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join("")}</div>
+                <span class="text-link">Explore project ↗</span>
+              </div>
+            </div>
+          </a>
+        </article>
+      `).join("");
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[char]));
+    }
+
+    function renderDetail(project) {
+      const media = project.video
+        ? `<iframe class="video-frame" src="${escapeHTML(project.video)}" title="${escapeHTML(project.title)} gameplay video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>`
+        : `<div class="media-placeholder"> <strong>Gameplay video goes here</strong><br>Add a YouTube embed URL to the <code>video</code> field for this project in the HTML file.</div>`;
+      const gallery = project.gallery && project.gallery.length
+        ? `<div class="gallery">${project.gallery.map(src => `<img src="${escapeHTML(src)}" alt="${escapeHTML(project.title)} screenshot" loading="lazy">`).join("")}</div>`
+        : `<div class="media-placeholder empty-gallery">Add screenshot file paths to this project’s <code>gallery</code> array to show images here.</div>`;
+
+      detail.innerHTML = `
+        <div class="detail-hero">
+          <div class="eyebrow">${escapeHTML(project.type)}</div>
+          <h1>${escapeHTML(project.title)}</h1>
+          <p class="detail-description">${escapeHTML(project.description)}</p>
+          <div class="tags">${project.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join("")}</div>
+        </div>
+        <div class="detail-cover" style="--art:${project.art}"><span>${project.mark}</span></div>
+        <div class="detail-layout">
+          <div>
+            <div class="eyebrow">See it in action</div><h2>Gameplay / trailer</h2>
+            ${media}
+            <h2>About the project</h2><p>${escapeHTML(project.description)}</p>
+            <h2>The challenge</h2><p>${escapeHTML(project.challenge)}</p>
+            <h2>My process</h2><p>${escapeHTML(project.process)}</p>
+            <h2>Outcome & reflection</h2><p>${escapeHTML(project.outcome)}</p>
+            <h2>Gallery</h2>${gallery}
+          </div>
+          <aside class="detail-sidebar">
+            <h3>Project details</h3>
+            <dl>
+              <dt>My role</dt><dd>${escapeHTML(project.role)}</dd>
+              <dt>Team</dt><dd>${escapeHTML(project.team)}</dd>
+              <dt>Tools</dt><dd>${escapeHTML(project.tools)}</dd>
+              <dt>Timeline</dt><dd>${escapeHTML(project.duration)}</dd>
+            </dl>
+            <p style="margin-top:24px"><a class="pill primary" href="mailto:hello@example.com">Ask me about it ↗</a></p>
+          </aside>
+        </div>
+      `;
+    }
+
+    function route() {
+      const hash = decodeURIComponent(location.hash.slice(1));
+      const project = projects.find(item => item.id === hash);
+      if (project) {
+        homePage.classList.add("hidden");
+        projectPage.classList.add("active");
+        renderDetail(project);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        projectPage.classList.remove("active");
+        homePage.classList.remove("hidden");
+        if (hash && hash !== "home" && hash !== "projects" && hash !== "about" && hash !== "contact") {
+          history.replaceState(null, "", "#home");
+        }
+      }
+    }
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    renderCards();
+    window.addEventListener("hashchange", route);
+    route();
+  </script>
 </body>
 </html>
