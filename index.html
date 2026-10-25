@@ -380,18 +380,44 @@
 
     function renderDetail(project) {
       const media = project.video
-        ? `<iframe class="video-frame" src="${escapeHTML(project.video)}" title="${escapeHTML(project.title)} gameplay video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>`
-        : `<div class="media-placeholder"> <strong>Gameplay video goes here</strong><br>Add a YouTube embed URL to the <code>video</code> field for this project in the HTML file.</div>`;
+        ? `<iframe
+             class="video-frame"
+             src="${escapeHTML(project.video)}"
+             title="${escapeHTML(project.title)} gameplay video"
+             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+             allowfullscreen
+             loading="lazy"></iframe>`
+        : `<div class="media-placeholder">
+             <strong>Gameplay video goes here</strong>
+             <p>Add a YouTube embed URL to this project's video field.</p>
+           </div>`;
+    
       const gallery = project.gallery && project.gallery.length
-        ? `<div class="gallery">${project.gallery.map(src => `<img src="${escapeHTML(src)}" alt="${escapeHTML(project.title)} screenshot" loading="lazy">`).join("")}</div>`
-        : `<div class="media-placeholder empty-gallery">Add screenshot file paths to this project’s <code>gallery</code> array to show images here.</div>`;
+        ? `<div class="gallery">
+             ${project.gallery.map(src => `
+               <img
+                 src="${escapeHTML(src)}"
+                 alt="${escapeHTML(project.title)} screenshot"
+                 loading="lazy">
+             `).join("")}
+           </div>`
+        : `<div class="media-placeholder empty-gallery">
+             Add screenshot file paths to this project's
+             <code>gallery</code> array to show images here.
+           </div>`;
+    
+      // Supporting documents are optional for every project.
+      const resources = project.resources && project.resources.length
         ? `
-          <section class="project-resources-section" aria-labelledby="resources-heading">
+          <section class="project-resources-section"
+                   aria-labelledby="resources-heading">
             <h2 id="resources-heading">Project Resources</h2>
             <p>Explore supporting documents and materials behind this project.</p>
+    
             <div class="project-resources">
               ${project.resources.map(resource => {
                 const isExternal = /^https?:\/\//i.test(resource.url);
+    
                 return `
                   <a class="resource-link"
                      href="${escapeHTML(resource.url)}"
@@ -400,7 +426,9 @@
                       <strong>${escapeHTML(resource.title || "Project resource")}</strong>
                       <p>${escapeHTML(resource.description || "")}</p>
                     </div>
-                    <span class="resource-type">${escapeHTML(resource.type || "Open")} ↗</span>
+                    <span class="resource-type">
+                      ${escapeHTML(resource.type || "Open")} ↗
+                    </span>
                   </a>
                 `;
               }).join("")}
@@ -408,34 +436,67 @@
           </section>
         `
         : "";
-
+    
       detail.innerHTML = `
         <div class="detail-hero">
           <div class="eyebrow">${escapeHTML(project.type)}</div>
           <h1>${escapeHTML(project.title)}</h1>
           <p class="detail-description">${escapeHTML(project.description)}</p>
-          <div class="tags">${project.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join("")}</div>
+          <div class="tags">
+            ${project.tags.map(tag => `
+              <span class="tag">${escapeHTML(tag)}</span>
+            `).join("")}
+          </div>
         </div>
+    
         <div class="detail-cover" style="--art:${project.art}"></div>
+    
         <div class="detail-layout">
           <div>
-            <div class="eyebrow">See the Final Product</div><h2>Gameplay / Trailer</h2>
+            <div class="eyebrow">See the Final Product</div>
+            <h2>Gameplay / Trailer</h2>
             ${media}
-            <h2>About the project</h2><p>${escapeHTML(project.description)}</p>
-            <h2>The challenge</h2><p>${escapeHTML(project.challenge)}</p>
-            <h2>My process</h2><p>${escapeHTML(project.process)}</p>
-            <h2>Outcome & reflection</h2><p>${escapeHTML(project.outcome)}</p>
-            <h2>Gallery</h2>${gallery}
+    
+            <h2>About the project</h2>
+            <p>${escapeHTML(project.description)}</p>
+    
+            <h2>The challenge</h2>
+            <p>${escapeHTML(project.challenge)}</p>
+    
+            <h2>My process</h2>
+            <p>${escapeHTML(project.process)}</p>
+    
+            <h2>Outcome &amp; reflection</h2>
+            <p>${escapeHTML(project.outcome)}</p>
+    
+            <h2>Gallery</h2>
+            ${gallery}
+    
+            ${resources}
           </div>
+    
           <aside class="detail-sidebar">
             <h3>Project details</h3>
             <dl>
-              <dt>My role</dt><dd>${escapeHTML(project.role)}</dd>
-              <dt>Team</dt><dd>${escapeHTML(project.team)}</dd>
-              <dt>Tools</dt><dd>${escapeHTML(project.tools)}</dd>
-              <dt>Timeline</dt><dd>${escapeHTML(project.duration)}</dd>
+              <dt>My role</dt>
+              <dd>${escapeHTML(project.role)}</dd>
+    
+              <dt>Team</dt>
+              <dd>${escapeHTML(project.team)}</dd>
+    
+              <dt>Tools</dt>
+              <dd>${escapeHTML(project.tools)}</dd>
+    
+              <dt>Timeline</dt>
+              <dd>${escapeHTML(project.duration)}</dd>
             </dl>
-            <p style="margin-top:24px"><a class="pill primary" href="mailto:lillinekothedev@gmail.com">Ask me about it ↗</a></p>
+    
+            <p style="margin-top:24px">
+              <a class="pill primary"
+                 href="mailto:lillinekothedev@gmail.com">
+                Ask me about it ↗
+              </a>
+            </p>
           </aside>
         </div>
       `;
