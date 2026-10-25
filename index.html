@@ -356,6 +356,7 @@
       document.getElementById("featured-art-grid").innerHTML = featured.map(project => `
         <a class="featured-art" href="#${encodeURIComponent(project.id)}"
            style="--art:${project.art}" aria-label="Explore ${escapeHTML(project.title)}">
+          <strong>${escapeHTML(project.title)}</strong>
         </a>
       `).join("");
     }
