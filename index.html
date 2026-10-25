@@ -263,6 +263,7 @@
         mark: "VOLCANO<br>ESCAPE",
         video: "https://www.youtube.com/embed/_dnH69j4Mp4",
         gallery: [],
+        resources: [],
         challenge: "Describe the core design challenge. What was difficult, unclear, or not working at first?",
         process: "Explain your approach: research, brainstorming, paper prototypes, greyboxing, playtests, iteration, or collaboration with the team.",
         outcome: "Share the result and what you learned. Add playtest findings, measurable outcomes, feedback, or what you would improve next."
@@ -282,6 +283,14 @@
         mark: "THREADS<br>OF<br>SEVERANCE",
         video: "https://www.youtube.com/embed/t-o46sR4FD8",
         gallery: ['Images/Threads-Of-Severance/poster.png'],
+        resources: [
+          {
+            title: "Narrative Design Document",
+            description: "Add a description of the story, worldbuilding, characters, and narrative structure.",
+            url: "Documents/Threads-Of-Severance-NDD.pdf",
+            type: "PDF"
+          }
+        ],
         challenge: "What player problem or design goal shaped this project?",
         process: "Walk through your blockout, encounter design, flow, landmarks, playtesting, and revisions.",
         outcome: "What worked well? What did feedback teach you? What would you iterate on next?"
@@ -301,6 +310,7 @@
         mark: "3D<br>DESIGN",
         video: "https://www.youtube.com/embed/1WUCrFJB1uk",
         gallery: [],
+        resources: [],
         challenge: "What question did you want this experiment to answer?",
         process: "Explain the rules you tried, the variables you changed, and how you tested the experience.",
         outcome: "Summarize what you discovered and how the findings could influence a larger game."
@@ -320,6 +330,7 @@
         mark: "PORTALS<br>ARE<br>WEIRD",
         video: "https://www.youtube.com/embed/OuzcDfXuYFI",
         gallery: [],
+        resources: [],
         challenge: "What storytelling challenge or constraint did the team face?",
         process: "Describe how you shaped player choice, dialogue, pacing, and collaboration with the rest of the team.",
         outcome: "Share the final result, player reactions, and the biggest lesson you took away."
@@ -374,6 +385,29 @@
       const gallery = project.gallery && project.gallery.length
         ? `<div class="gallery">${project.gallery.map(src => `<img src="${escapeHTML(src)}" alt="${escapeHTML(project.title)} screenshot" loading="lazy">`).join("")}</div>`
         : `<div class="media-placeholder empty-gallery">Add screenshot file paths to this project’s <code>gallery</code> array to show images here.</div>`;
+        ? `
+          <section class="project-resources-section" aria-labelledby="resources-heading">
+            <h2 id="resources-heading">Project Resources</h2>
+            <p>Explore supporting documents and materials behind this project.</p>
+            <div class="project-resources">
+              ${project.resources.map(resource => {
+                const isExternal = /^https?:\/\//i.test(resource.url);
+                return `
+                  <a class="resource-link"
+                     href="${escapeHTML(resource.url)}"
+                     ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                    <div class="resource-info">
+                      <strong>${escapeHTML(resource.title || "Project resource")}</strong>
+                      <p>${escapeHTML(resource.description || "")}</p>
+                    </div>
+                    <span class="resource-type">${escapeHTML(resource.type || "Open")} ↗</span>
+                  </a>
+                `;
+              }).join("")}
+            </div>
+          </section>
+        `
+        : "";
 
       detail.innerHTML = `
         <div class="detail-hero">
