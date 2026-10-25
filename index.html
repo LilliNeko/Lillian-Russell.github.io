@@ -51,14 +51,23 @@
     h1 em { color: var(--accent); font-style: normal; }
     .intro { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 630px; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
-    .hero-card {
-      border: 1px solid var(--line); border-radius: 24px; padding: 25px; background:
-      radial-gradient(ellipse at 80% 0%, rgba(197,244,103,.16), transparent 48%), var(--panel);
-      min-height: 280px; display: flex; flex-direction: column; justify-content: space-between;
+    .portrait-card {
+      position: relative; min-height: 350px; overflow: hidden; border: 1px solid var(--line);
+      border-radius: 24px; background: radial-gradient(ellipse at 50% 20%, rgba(197,244,103,.18), transparent 45%), var(--panel);
+      display: grid; place-items: center;
     }
-    .orb { width: 88px; height: 88px; border-radius: 28px; background: var(--accent); color: #14180d; display: grid; place-items: center; font-size: 2.2rem; transform: rotate(-9deg); }
-    .hero-card strong { font-size: 1.4rem; line-height: 1.2; letter-spacing: -.04em; display: block; max-width: 220px; }
-    .hero-card p { color: var(--muted); margin-bottom: 0; font-size: .92rem; }
+    .portrait-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .portrait-placeholder { display: grid; place-items: center; gap: 14px; text-align: center; padding: 28px; color: var(--muted); }
+    .portrait-initials { width: 112px; height: 112px; display: grid; place-items: center; border-radius: 32px; background: var(--accent); color: #151a0d; font-size: 2.6rem; font-weight: 900; letter-spacing: -.08em; transform: rotate(-5deg); }
+    .portrait-placeholder strong { color: var(--text); font-size: 1.1rem; }
+    .featured-strip { padding: 0 0 22px; }
+    .strip-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 12px; }
+    .strip-heading span { color: var(--muted); font-size: .82rem; }
+    .featured-art-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .featured-art { position: relative; display: flex; align-items: end; min-height: 112px; aspect-ratio: 2.2 / 1; overflow: hidden; padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--art); text-decoration: none; }
+    .featured-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 25%, rgba(0,0,0,.62)); }
+    .featured-art strong { position: relative; z-index: 1; font-size: clamp(.85rem, 1.6vw, 1.1rem); line-height: 1.1; }
+    .featured-art:hover { border-color: var(--accent); transform: translateY(-2px); }
     section { padding: 54px 0; }
     .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 26px; }
     h2 { font-size: clamp(2rem, 4vw, 3.1rem); letter-spacing: -.06em; line-height: 1.05; margin: 8px 0 0; }
@@ -128,7 +137,9 @@
       .nav-links a { font-size: .82rem; }
       .nav-links .pill { padding: 8px 11px; }
       .hero { grid-template-columns: 1fr; padding: 65px 0 45px; gap: 28px; }
-      .hero-card { min-height: 220px; }
+      .portrait-card { min-height: 260px; }
+      .featured-art-grid { grid-template-columns: 1fr; }
+      .featured-art { aspect-ratio: 2.8 / 1; min-height: 90px; }
       .project-grid, .about-grid, .detail-layout { grid-template-columns: 1fr; }
       .section-head, .contact-box { align-items: start; flex-direction: column; }
       section { padding: 40px 0; }
@@ -161,16 +172,26 @@
           <p class="intro">Hey, I’m <strong>Lillian Russell</strong>, a game designer who loves building memorable experiences, meaningful mechanics, and worlds players want to get lost in.</p>
           <div class="hero-actions">
             <a class="pill primary" href="#projects">Explore my work ↓</a>
-            <a class="pill" href="lillinekothedev@gmail.com">Email me ↗</a>
+            <a class="pill" href="mailto:lillinekothedev@gmail.com">Email me ↗</a>
           </div>
         </div>
-        <aside class="hero-card" aria-label="Portfolio introduction">
-          <div class="orb">✳</div>
-          <div>
-            <strong>Curiosity first.<br>Player experience always.</strong>
-            <p>Selected projects, experiments, and things I’ve learned along the way.</p>
+        <aside class="portrait-card" aria-label="Portrait of Lillian Russell">
+          <img src="images/lillian.jpg" alt="Portrait of Lillian Russell"
+               onerror="this.style.display='none'">
+          <div class="portrait-placeholder">
+            <div class="portrait-initials" aria-hidden="true">LR</div>
+            <strong>Add your photo here</strong>
+            <span>Save a portrait as <code>images/lillian.jpg</code></span>
           </div>
         </aside>
+      </section>
+
+      <section class="featured-strip" aria-label="Featured project artwork">
+        <div class="strip-heading">
+          <div class="eyebrow">A first look</div>
+          <span>Selected work · Click to explore</span>
+        </div>
+        <div class="featured-art-grid" id="featured-art-grid"></div>
       </section>
 
       <section id="projects">
@@ -337,6 +358,16 @@
       `).join("");
     }
 
+    function renderFeaturedArt() {
+      const featured = projects.slice(0, 3);
+      document.getElementById("featured-art-grid").innerHTML = featured.map(project => `
+        <a class="featured-art" href="#${encodeURIComponent(project.id)}"
+           style="--art:${project.art}" aria-label="Explore ${escapeHTML(project.title)}">
+          <strong>${escapeHTML(project.title)}</strong>
+        </a>
+      `).join("");
+    }
+
     function escapeHTML(value) {
       return String(value ?? "").replace(/[&<>"']/g, char => ({
         "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -402,6 +433,7 @@
 
     document.getElementById("year").textContent = new Date().getFullYear();
     renderCards();
+    renderFeaturedArt();
     window.addEventListener("hashchange", route);
     route();
   </script>
