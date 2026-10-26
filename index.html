@@ -71,6 +71,7 @@
     .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 26px; }
     h2 { font-size: clamp(2rem, 4vw, 3.1rem); letter-spacing: -.06em; line-height: 1.05; margin: 8px 0 0; }
     .section-note { color: var(--muted); max-width: 390px; margin: 0; }
+    .process-text { white-space: pre-line; }
     .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
     .project-card {
       border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
@@ -253,7 +254,7 @@
         title: "Volcano Escape",
         type: "Game Design · Solo Project",
         short: "A fast-paced 3D escape game where players race against rising lava, navigate dangerous obstacles, and master momentum-based movement. With bounce pads, shifting gravity zones, and collectible coins, every jump becomes a test of timing, precision, and adaptability.",
-        description: "Volcano Escape is a 3D platforming game where players must navigate a dangerous volcanic environment and escape before the rising lava catches up to them. To survive, players must master a variety of movement mechanics and overcome obstacles that test their timing, precision, and adaptability. Bounce pads launch players in a direction perpendicular to the pad's surface while preserving some of their existing momentum, allowing for dynamic movement and skillful jumps. Spinning obstacles threaten to knock players off the map, demanding careful timing and positioning. Gravity zones further complicate traversal by changing the direction of gravity, forcing players to quickly adapt to unfamiliar movement conditions. Throughout the escape, players can also collect coins to increase their score, adding an extra layer of challenge for those willing to take risks along the way. By combining time pressure, momentum-based movement, environmental hazards, and collectibles, Volcano Escape creates a fast-paced experience that rewards both quick reactions and skillful navigation.",
+        description: "Volcano Escape is a 3D platforming game where players must navigate a dangerous volcanic environment and escape before the rising lava catches up to them. To survive, players must master a variety of movement mechanics and overcome obstacles that test their timing, precision, and adaptability.\n\nBounce pads launch players in a direction perpendicular to the pad's surface while preserving some of their existing momentum, allowing for dynamic movement and skillful jumps. Spinning obstacles threaten to knock players off the map, demanding careful timing and positioning. Gravity zones further complicate traversal by changing the direction of gravity, forcing players to quickly adapt to unfamiliar movement conditions.\n\nThroughout the escape, players can also collect coins to increase their score, adding an extra layer of challenge for those willing to take risks along the way. By combining time pressure, momentum-based movement, environmental hazards, and collectibles, Volcano Escape creates a fast-paced experience that rewards both quick reactions and skillful navigation.",
         role: "Game Designer",
         team: "Solo",
         tools: "Unreal Engine 5.6",
@@ -318,13 +319,7 @@
         gallery: [],
         resources: [],
         challenge: "How could I transform a simple 3D shape into a detailed, believable, and visually appealing object using Blender's modeling and procedural tools? I also wanted to explore how animation could bring the finished model to life, particularly through exaggerated movement and squash-and-stretch deformation.",
-        process: "I started by creating a torus and adjusting its proportions to resemble a donut. To create the icing, I duplicated the upper portion of the mesh, scaled it slightly, and separated it into its own object for independent editing and material control. One early challenge was creating natural-looking icing drips. After experimenting with different approaches, I discovered that my Proportional Editing influence was set too low to produce the intended effect.
-
-Next, I developed separate materials for the dough and icing, using Blender's Shader Editor to introduce procedural color variation and surface bumps. These details helped break up the uniform appearance of the base mesh and gave the donut a more baked, textured look.
-
-For the sprinkles, I used Geometry Nodes to distribute points across the icing and instance sprinkle models at those locations. I created multiple sprinkle variations, including a distinctive S-shaped design, and organized them into a collection that Geometry Nodes could randomly sample. I also built a shared sprinkle material that used shader nodes to assign one of seven colors to each sprinkle, creating a more varied and natural-looking result.
-
-Once the model was complete, I moved on to animation. Using Blender's auto-keyframing tools and tutorials from Blender Guru as references, I first created a coin-flip-style animation. I then experimented with a bouncing motion, incorporating squash and stretch to give the donut a more playful sense of weight and elasticity.",
+        process: "I started by creating a torus and adjusting its proportions to resemble a donut. To create the icing, I duplicated the upper portion of the mesh, scaled it slightly, and separated it into its own object for independent editing and material control. One early challenge was creating natural-looking icing drips. After experimenting with different approaches, I discovered that my Proportional Editing influence was set too low to produce the intended effect.\n\nNext, I developed separate materials for the dough and icing, using Blender's Shader Editor to introduce procedural color variation and surface bumps. These details helped break up the uniform appearance of the base mesh and gave the donut a more baked, textured look.\n\nFor the sprinkles, I used Geometry Nodes to distribute points across the icing and instance sprinkle models at those locations. I created multiple sprinkle variations, including a distinctive S-shaped design, and organized them into a collection that Geometry Nodes could randomly sample. I also built a shared sprinkle material that used shader nodes to assign one of seven colors to each sprinkle, creating a more varied and natural-looking result.\n\nOnce the model was complete, I moved on to animation. Using Blender's auto-keyframing tools and tutorials from Blender Guru as references, I first created a coin-flip-style animation. I then experimented with a bouncing motion, incorporating squash and stretch to give the donut a more playful sense of weight and elasticity.",
         outcome: "The project resulted in a fully modeled, procedurally decorated donut with custom materials and animation. I gained practical experience with mesh editing, proportional editing, material creation, procedural shading, Geometry Nodes, object instancing, and keyframe animation. One of the most valuable lessons was discovering how procedural systems can create substantial visual variety without requiring every detail to be placed or edited manually. The project also helped me understand how squash and stretch can make even a simple object feel more expressive. These techniques can carry over into game development, particularly for creating reusable assets, efficient decorative details, and expressive animations."
       },
       {
@@ -476,7 +471,7 @@ Once the model was complete, I moved on to animation. Using Blender's auto-keyfr
             <p>${escapeHTML(project.challenge)}</p>
     
             <h2>My process</h2>
-            <p>${escapeHTML(project.process)}</p>
+            <p class="process-text">${escapeHTML(project.process)}</p>
     
             <h2>Outcome &amp; reflection</h2>
             <p>${escapeHTML(project.outcome)}</p>
