@@ -78,13 +78,6 @@
       background: var(--panel); transition: transform .22s, border-color .22s;
     }
     .project-card:hover { transform: translateY(-5px); border-color: #606060; }
-    .project-art {
-      aspect-ratio: 16 / 9; padding: 22px; position: relative; overflow: hidden;
-      display: flex; align-items: end; background: var(--art, linear-gradient(135deg,#384b35,#151a14));
-    }
-    .project-art::before, .project-art::after { content: ""; position: absolute; border: 1px solid rgba(255,255,255,.23); transform: rotate(-24deg); }
-    .project-art::before { width: 65%; height: 150%; right: -8%; top: -30%; border-radius: 45%; }
-    .project-art::after { width: 35%; height: 120%; right: 17%; top: -18%; border-radius: 50%; }
     .art-mark { position: relative; z-index: 1; font-size: clamp(2rem, 5vw, 4.4rem); font-weight: 900; letter-spacing: -.09em; line-height: .9; max-width: 80%; text-shadow: 0 2px 20px rgba(0,0,0,.16); }
     .project-content { padding: 22px; }
     .meta { color: var(--accent); text-transform: uppercase; letter-spacing: .12em; font-size: .7rem; font-weight: 800; }
