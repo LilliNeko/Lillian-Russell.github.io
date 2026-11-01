@@ -86,6 +86,15 @@
     .project-content { padding: 22px; }
     .meta { color: var(--accent); text-transform: uppercase; letter-spacing: .12em; font-size: .7rem; font-weight: 800; }
     .project-content h3 { font-size: 1.45rem; letter-spacing: -.04em; margin: 8px 0; }
+    .project-date {
+      display: inline-flex; align-items: center; gap: 7px;
+      margin: 2px 0 12px; color: var(--muted); font-size: .78rem;
+      letter-spacing: .02em;
+    }
+    .project-date::before {
+      content: ""; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); flex: 0 0 auto;
+    }
     .project-content p { color: var(--muted); margin: 0 0 18px; }
     .card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .tags { display: flex; flex-wrap: wrap; gap: 7px; }
@@ -240,6 +249,7 @@
       {
         id: "Volcano-Escape",
         title: "Volcano Escape",
+        created: "2026",
         type: "Game Design · Solo Project",
         short: "A race against rising lava where momentum is your greatest asset and gravity doesn't always play by the rules. I designed a movement-focused platforming experience built around bounce pads, spinning hazards, and gravity-changing zones.",
         description: "Volcano Escape is a 3D platformer about getting out before the rising lava catches you. The catch is that the environment is full of obstacles that make simply running for the exit much more interesting. The movement is built around momentum. Bounce pads launch the player perpendicular to their surface while preserving some of the momentum they already have, so the direction and speed they enter with both matter. Spinning hazards put that movement to the test, while gravity zones can suddenly change which way is down. I wanted these mechanics to give players room to experiment and find their own rhythm rather than just follow a straightforward path. Coins add an optional scoring challenge for players willing to take a few extra risks. Put together, the rising lava, movement mechanics, and hazards create a short, fast-paced escape that rewards quick decisions and confident navigation.",
@@ -260,6 +270,7 @@
       {
         id: "threads-of-severance",
         title: "Threads of Severance",
+        created: "2026",
         type: "Storyworld Design · Solo Project",
         short: "What if love could reshape reality, and a society built around controlling it began to unravel? I developed a high-fantasy storyworld exploring emotional magic, institutional control, and the consequences of making private relationships a matter of public order.",
         description: "Threads of Severance is a high-fantasy storyworld built around a strange premise: romantic relationships are magically bound, and emotional incompatibility can cause disturbances in reality itself. When a failed Severing ritual exposes a deeper fracture in the world, a young Temple Resonant is forced to question the institution they serve and the rules they have been taught to uphold. I created the storyworld and its narrative design document from the ground up, developing its magic system, history, cultures, factions, locations, characters, and connected storylines. What interested me most was following the premise beyond the central plot. If emotions can affect reality, how would that change religion, politics, everyday life, and the way people understand their relationships? The project grew out of exploring those questions.",
@@ -293,6 +304,7 @@
       {
         id: "the-donut",
         title: "The Donut",
+        created: "2025",
         type: "3D Design · Solo Project",
         short: "One donut, an unreasonable number of sprinkles, and a dive into procedural modeling. I used Blender's Geometry Nodes, custom materials, and animation tools to turn a simple shape into a detailed, colorful, animated creation.",
         description: "The Donut started as a simple experiment: could I turn a basic torus into something that looked good enough to eat? Over the project, that simple shape picked up custom icing, procedurally placed sprinkles, varied materials, and animation. I used it as an opportunity to explore several parts of Blender, from modeling and shading to Geometry Nodes and keyframe animation. It was a small subject, but it gave me plenty of room to experiment.",
@@ -326,6 +338,7 @@
             <div class="project-content">
               <div class="meta">${escapeHTML(project.type)}</div>
               <h3>${escapeHTML(project.title)}</h3>
+              <div class="project-date">${escapeHTML(project.created)}</div>
               <p>${escapeHTML(project.short)}</p>
               <div class="card-bottom">
                 <div class="tags">${project.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join("")}</div>
