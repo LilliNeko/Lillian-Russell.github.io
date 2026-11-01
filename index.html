@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111111">
+  <meta name="description" content="Game design portfolio and selected projects.">
+  <title>Lillian Russell | Game Designer</title>
+  <style>
+    :root {
+      --bg: #101010;
+      --panel: #181818;
+      --panel-2: #202020;
+      --text: #f4f1ea;
+      --muted: #aaa79f;
+      --accent: #c5f467;
+      --line: #343434;
+      --max: 1160px;
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a { color: inherit; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    .wrap { width: min(var(--max), calc(100% - 44px)); margin-inline: auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 10; backdrop-filter: blur(16px);
+      background: rgba(16,16,16,.86); border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; min-height: 72px; gap: 20px; }
+    .brand { text-decoration: none; font-weight: 850; letter-spacing: -.04em; font-size: 1.05rem; }
+    .brand span { color: var(--accent); }
+    .nav-links { display: flex; gap: 24px; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: .92rem; }
+    .nav-links a:hover { color: var(--text); }
+    .pill {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px;
+      text-decoration: none; font-size: .9rem; font-weight: 700; transition: transform .2s, background .2s;
+    }
+    .pill:hover { transform: translateY(-2px); }
+    .pill.primary { background: var(--accent); border-color: var(--accent); color: #151a0d; }
+    .hero { padding: 94px 0 76px; display: grid; grid-template-columns: 1.35fr .65fr; gap: 54px; align-items: center; }
+    .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: .17em; font-size: .75rem; font-weight: 800; }
+    h1 { font-size: clamp(3.2rem, 7.5vw, 6.8rem); line-height: .96; letter-spacing: -.075em; margin: 18px 0 24px; max-width: 850px; }
+    h1 em { color: var(--accent); font-style: normal; }
+    .intro { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.25rem); max-width: 630px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .portrait-card {
+      position: relative; min-height: 350px; overflow: hidden; border: 1px solid var(--line);
+      border-radius: 24px; background: radial-gradient(ellipse at 50% 20%, rgba(197,244,103,.18), transparent 45%), var(--panel);
+      display: grid; place-items: center;
+    }
+    .portrait-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .portrait-placeholder { display: grid; place-items: center; gap: 14px; text-align: center; padding: 28px; color: var(--muted); }
+    .portrait-initials { width: 112px; height: 112px; display: grid; place-items: center; border-radius: 32px; background: var(--accent); color: #151a0d; font-size: 2.6rem; font-weight: 900; letter-spacing: -.08em; transform: rotate(-5deg); }
+    .portrait-placeholder strong { color: var(--text); font-size: 1.1rem; }
+    .featured-strip { padding: 0 0 22px; }
+    .strip-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 12px; }
+    .strip-heading span { color: var(--muted); font-size: .82rem; }
+    .featured-art-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .featured-art { position: relative; display: flex; align-items: end; min-height: 112px; aspect-ratio: 2.2 / 1; overflow: hidden; padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--art); text-decoration: none; }
+    .featured-art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 25%, rgba(0,0,0,.62)); }
+    .featured-art strong { position: relative; z-index: 1; font-size: clamp(.85rem, 1.6vw, 1.1rem); line-height: 1.1; }
+    .featured-art:hover { border-color: var(--accent); transform: translateY(-2px); }
+    section { padding: 54px 0; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 26px; }
+    h2 { font-size: clamp(2rem, 4vw, 3.1rem); letter-spacing: -.06em; line-height: 1.05; margin: 8px 0 0; }
+    .section-note { color: var(--muted); max-width: 390px; margin: 0; }
+    .process-text { white-space: pre-line; }
+    .project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .project-card {
+      border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+      background: var(--panel); transition: transform .22s, border-color .22s;
+    }
+    .project-card:hover { transform: translateY(-5px); border-color: #606060; }
+    .project-art {
+      aspect-ratio: 16 / 9; padding: 22px; position: relative; overflow: hidden;
+      display: flex; align-items: end; background: var(--art, linear-gradient(135deg,#384b35,#151a14));
+    }
+    .art-mark { position: relative; z-index: 1; font-size: clamp(2rem, 5vw, 4.4rem); font-weight: 900; letter-spacing: -.09em; line-height: .9; max-width: 80%; text-shadow: 0 2px 20px rgba(0,0,0,.16); }
+    .project-content { padding: 22px; }
+    .meta { color: var(--accent); text-transform: uppercase; letter-spacing: .12em; font-size: .7rem; font-weight: 800; }
+    .project-content h3 { font-size: 1.45rem; letter-spacing: -.04em; margin: 8px 0; }
+    .project-content p { color: var(--muted); margin: 0 0 18px; }
+    .card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+    .tag { border: 1px solid var(--line); border-radius: 999px; padding: 4px 9px; color: #d2d0c9; font-size: .75rem; }
+    .text-link { color: var(--accent); font-weight: 750; text-decoration: none; white-space: nowrap; }
+    .text-link:hover { text-decoration: underline; }
+    .about-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 44px; }
+    .about-copy { color: var(--muted); font-size: 1.05rem; }
+    .skills { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 22px; }
+    .skill { background: var(--panel-2); border: 1px solid var(--line); padding: 9px 12px; border-radius: 10px; font-size: .86rem; }
+    .contact-box { border: 1px solid var(--line); border-radius: 24px; padding: clamp(25px, 5vw, 54px); background: linear-gradient(135deg, rgba(197,244,103,.09), transparent 60%), var(--panel); display: flex; align-items: end; justify-content: space-between; gap: 28px; }
+    .contact-box p { color: var(--muted); max-width: 520px; }
+    footer { border-top: 1px solid var(--line); margin-top: 45px; padding: 24px 0; color: var(--muted); font-size: .85rem; }
+    .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .socials { display: flex; gap: 16px; flex-wrap: wrap; }
+    .socials a { color: var(--muted); text-decoration: none; }
+    .socials a:hover { color: var(--accent); }
+    .detail-page { display: none; min-height: 70vh; padding: 54px 0 80px; }
+    .detail-page.active { display: block; }
+    #home-page.hidden { display: none; }
+    .back-link { display: inline-block; margin-bottom: 28px; color: var(--accent); text-decoration: none; font-weight: 750; }
+    .detail-hero { padding: 35px 0 28px; }
+    .detail-hero h1 { font-size: clamp(2.8rem, 7vw, 5.5rem); }
+    .detail-description { color: var(--muted); max-width: 760px; font-size: 1.15rem; }
+    .detail-cover { border-radius: 22px; overflow: hidden; aspect-ratio: 16/7; background: var(--art); display: grid; place-items: center; margin: 28px 0 40px; }
+    .detail-cover span { font-size: clamp(2.5rem, 8vw, 7rem); font-weight: 900; letter-spacing: -.08em; text-align: center; padding: 20px; }
+    .detail-layout { display: grid; grid-template-columns: 1.4fr .6fr; gap: 45px; }
+    .detail-layout h2 { font-size: 1.6rem; margin: 28px 0 12px; }
+    .detail-layout p, .detail-layout li { color: var(--muted); }
+    .detail-layout ul { padding-left: 20px; }
+    .detail-sidebar { border: 1px solid var(--line); border-radius: 16px; padding: 22px; align-self: start; background: var(--panel); }
+    .detail-sidebar h3 { margin-top: 0; }
+    .detail-sidebar dl { margin: 0; }
+    .detail-sidebar dt { color: var(--muted); font-size: .76rem; text-transform: uppercase; letter-spacing: .1em; margin-top: 17px; }
+    .detail-sidebar dd { margin: 3px 0 0; }
+    .media-placeholder { border: 1px dashed #5b5b5b; border-radius: 16px; padding: 30px; color: var(--muted); text-align: center; background: var(--panel); }
+    .media-placeholder a { color: var(--accent); }
+    .video-frame { width: 100%; aspect-ratio: 16/9; border: 0; border-radius: 16px; background: #222; } 
+    .gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
+    .gallery img { display: block; width: 100%; height: auto; aspect-ratio: auto; object-fit: contain; border-radius: 12px; background: var(--panel-2); }
+    .empty-gallery { grid-column: 1/-1; }
+    @media (max-width: 760px) {
+      .wrap { width: min(100% - 30px, var(--max)); }
+      .nav { min-height: 64px; }
+      .nav-links { gap: 13px; }
+      .nav-links a { font-size: .82rem; }
+      .nav-links .pill { padding: 8px 11px; }
+      .hero { grid-template-columns: 1fr; padding: 65px 0 45px; gap: 28px; }
+      .portrait-card { min-height: 260px; }
+      .featured-art-grid { grid-template-columns: 1fr; }
+      .featured-art { aspect-ratio: 2.8 / 1; min-height: 90px; }
+      .project-grid, .about-grid, .detail-layout { grid-template-columns: 1fr; }
+      .section-head, .contact-box { align-items: start; flex-direction: column; }
+      section { padding: 40px 0; }
+    }
+    @media (max-width: 420px) {
+      .nav-links { gap: 10px; }
+      .nav-links a:first-child { display: none; }
+      .card-bottom { align-items: start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav wrap" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="Lillian Russell home">Lillian Russell<span>.</span></a>
+      <div class="nav-links">
+        <a href="#projects">Projects</a>
+        <a href="#about">About</a>
+        <a class="pill" href="#contact">Get in touch ↗</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="home-page">
+    <div class="wrap">
+      <section class="hero" id="home">
+        <div>
+          <div class="eyebrow">Game Designer · World Builder · Problem Solver</div>
+          <h1>Curiosity is a <br><em>game mechanic.</em></h1>
+          <p class="intro">Hey, I’m <strong>Lillian Russell</strong>, a game designer who loves figuring out what makes a world tick, a mechanic click, or a story stick with you. From chaotic platforming challenges to fantasy worlds built around emotional magic, I'm interested in the little details that turn an interesting idea into an experience worth exploring.</p>
+          <div class="hero-actions">
+            <a class="pill primary" href="#projects">See what I've been making ↓</a>
+            <a class="pill" href="mailto:lillinekothedev@gmail.com">Email me ↗</a>
+          </div>
+        </div>
+        <aside class="portrait-card" aria-label="Portrait of Lillian Russell">
+          <img src="Images/lillian.jpg" alt="Portrait of Lillian Russell"
+               onerror="this.style.display='none'">
+        </aside>
+      </section>
+
+      <section class="featured-strip" aria-label="Featured project artwork">
+        <div class="strip-heading">
+          <div class="eyebrow">A first look</div>
+          <span>Selected work · Click to explore</span>
+        </div>
+        <div class="featured-art-grid" id="featured-art-grid"></div>
+      </section>
+
+      <section id="projects">
+        <div class="section-head">
+          <div><div class="eyebrow">A few things I’ve made</div><h2>Featured projects</h2></div>
+          <p class="section-note">A collection of experiments, worlds, and what ifs. Pick a project to see the concept, process, and media.</p>
+        </div>
+        <div class="project-grid" id="project-grid"></div>
+      </section>
+
+      <section id="about">
+        <div class="about-grid">
+          <div><div class="eyebrow">The person behind the pixels</div><h2>Making ideas<br>playable.</h2></div>
+          <div>
+            <p class="about-copy">I'm Lillian, a game designer who loves taking an idea and figuring out just how far it can go. Sometimes that means building a platformer around momentum and gravity. Other times, it means creating an entire fantasy world where emotional relationships can literally change reality. I'm especially interested in the connections between mechanics, storytelling, and worldbuilding: how a small design decision can change the way someone plays, how a rule can shape an entire fictional society, or how an unusual idea can become something surprisingly compelling. My projects let me experiment across different creative disciplines, from level design and node-based scripting in Unreal Engine to narrative systems, 3D modeling, and animation in Blender. I'm always looking for something new to learn, a problem worth solving, or an idea that's just a little too interesting to leave alone.</p>
+            <div class="skills" aria-label="Skills">
+              <span class="skill">Game design</span><span class="skill">Systems design</span>
+              <span class="skill">Level design</span><span class="skill">Narrative design</span>
+              <span class="skill">Prototyping</span><span class="skill">Playtesting</span>
+              <span class="skill">Documentation</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="contact-box">
+          <div><div class="eyebrow">Got an interesting idea?</div><h2>Let's see what<br>we can make of it.</h2><p>I'm always happy to connect with people who love making games, exploring creative ideas, and figuring out how to bring ambitious concepts to life. Whether it's an opportunity, a collaboration, or just a conversation about game design, I'd love to hear from you.</p></div>
+          <a class="pill primary" href="mailto:lillinekothedev@gmail.com">lillinekothedev@gmail.com ↗</a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <main class="detail-page" id="project-page" aria-live="polite">
+    <div class="wrap">
+      <a class="back-link" href="#projects">← Back to all projects</a>
+      <div id="project-detail"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span>© <span id="year"></span> Lillian Russell. Designed, built, and occasionally overthought by Lillian.</span>
+      <div class="socials">
+        <a href="https://www.linkedin.com/in/lillian-russell-b7536439a" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+        <a href="https://github.com/LilliNeko" target="_blank" rel="noreferrer">GitHub ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const projects = [
+      {
+        id: "Volcano-Escape",
+        title: "Volcano Escape",
+        type: "Game Design · Solo Project",
+        short: "A race against rising lava where momentum is your greatest asset and gravity doesn't always play by the rules. I designed a movement-focused platforming experience built around bounce pads, spinning hazards, and gravity-changing zones.",
+        description: "Volcano Escape is a 3D platformer about getting out before the rising lava catches you. The catch is that the environment is full of obstacles that make simply running for the exit much more interesting. The movement is built around momentum. Bounce pads launch the player perpendicular to their surface while preserving some of the momentum they already have, so the direction and speed they enter with both matter. Spinning hazards put that movement to the test, while gravity zones can suddenly change which way is down. I wanted these mechanics to give players room to experiment and find their own rhythm rather than just follow a straightforward path. Coins add an optional scoring challenge for players willing to take a few extra risks. Put together, the rising lava, movement mechanics, and hazards create a short, fast-paced escape that rewards quick decisions and confident navigation.",
+        role: "Game Designer",
+        team: "Solo",
+        tools: "Unreal Engine 5.6",
+        duration: "4 weeks",
+        tags: ["Unreal Engine", "Level Design", "Node-Based Code", "Landscaping"],
+        art: "url('Images/Volcano-Escape/Volcano-Escape-Cover.png') center / cover no-repeat",
+        mark: "VOLCANO<br>ESCAPE",
+        video: "https://www.youtube.com/embed/_dnH69j4Mp4",
+        gallery: ['Images/Volcano-Escape/Volcano-Escape-Cover.png'],
+        resources: [],
+        challenge: "The tricky part was making the movement feel exciting without making it feel out of the player's hands. I wanted bounce pads to redirect players while still carrying some of their existing momentum, rather than resetting their movement completely. At the same time, the spinning hazards and gravity changes needed to create pressure without making mistakes feel random or unfair. Getting those pieces to work together was the main balancing act.",
+        process: "I built Volcano Escape on my own over four weeks in Unreal Engine 5.6. I used node-based scripting to put the movement mechanics together, then designed the level around the ways players could use them. I added bounce pads, spinning obstacles, and gravity zones to give each section a different movement challenge, while the landscaping helped bring the volcanic setting together. I also placed coins along the routes to give players a reason to take detours and push their scores higher.",
+        outcome: "The finished project brought the movement systems, hazards, and time pressure together into one playable escape. Building it gave me hands-on experience with connecting gameplay mechanics, designing a level around player abilities, and taking a project from idea to implementation on my own. If I were to revisit it, I’d focus on playtesting the difficulty curve: making sure each mechanic is introduced clearly before combining them into more demanding challenges."
+      },
+      {
+        id: "threads-of-severance",
+        title: "Threads of Severance",
+        type: "Storyworld Design · Solo Project",
+        short: "What if love could reshape reality, and a society built around controlling it began to unravel? I developed a high-fantasy storyworld exploring emotional magic, institutional control, and the consequences of making private relationships a matter of public order.",
+        description: "Threads of Severance is a high-fantasy storyworld built around a strange premise: romantic relationships are magically bound, and emotional incompatibility can cause disturbances in reality itself. When a failed Severing ritual exposes a deeper fracture in the world, a young Temple Resonant is forced to question the institution they serve and the rules they have been taught to uphold. I created the storyworld and its narrative design document from the ground up, developing its magic system, history, cultures, factions, locations, characters, and connected storylines. What interested me most was following the premise beyond the central plot. If emotions can affect reality, how would that change religion, politics, everyday life, and the way people understand their relationships? The project grew out of exploring those questions.",
+        role: "Storyworld Designer",
+        team: "Solo",
+        tools: "Google Docs, Blender",
+        duration: "16 weeks",
+        tags: ["Storyworld Design", "Narrative Systems", "Worldbuilding", "Interconnected Structures", "Transmedia Narrative"],
+        art: "url('Images/Threads-Of-Severance/poster.png') center top / cover no-repeat",
+        mark: "THREADS<br>OF<br>SEVERANCE",
+        video: "https://www.youtube.com/embed/t-o46sR4FD8",
+        gallery: ['Images/Threads-Of-Severance/poster.png'],
+        resources: [
+          {
+            title: "Narrative Design Document",
+            description: "A comprehensive storyworld bible detailing the central premise, metaphysical rules, world history, factions, characters, locations, artifacts, and interconnected narratives of Threads of Severance.",
+            url: "Documents/Threads-Of-Severance/Threads-Of-Severance-NDD.pdf",
+            type: "PDF"
+          },
+          {
+            title: " TTRPG Rules and Gameplay",
+            description: "A supplementary rules and gameplay document extending the storyworld into a tabletop roleplaying experience.",
+            url: "Documents/Threads-Of-Severance/TTRPG-Rules-and-Gameplay.pdf",
+            type: "PDF"
+          }
+        ],
+        challenge: "The biggest challenge was making the central idea feel like something the whole world had grown around, rather than a magic gimmick that only mattered when the plot needed it. If relationships can affect reality, that should have consequences for far more than individual characters. I had to think through how the magic would work, where its limits were, and how people and institutions would respond to it. I wanted emotional conflict to be built into the world's systems and culture, not just mentioned as one of its themes.",
+        process: "I started with the rules of the setting: relationships are metaphysically bound, and emotional incompatibility can become supernatural instability. From there, I worked out what the magic could actually do, what it cost, and where its limits were. The system includes Projection, Binding, Manifestation, Severing, and Reconciliation.\n\nOnce those foundations were in place, I followed their consequences outward. I developed the world's social structures, regions, belief systems, factions, history, and material culture, then used those pieces to shape the characters and stories. That included character arcs, a three-act central narrative, a wider overarching story, and smaller side stories. I wanted each part of the setting to feel connected to the same underlying questions about emotional honesty, institutional control, and the cost of trying to regulate people's relationships.",
+        outcome: "The result is a detailed storyworld document tying the central premise to the setting's magic, cultures, institutions, and interconnected stories. One part I’m particularly happy with is how the same magical rule can have consequences at so many different scales, from a personal relationship to the structure of an entire society. I also explored how the setting could work beyond a written narrative, including a supplementary tabletop roleplaying experience. I’d love to take the next step by turning parts of the world into something interactive and seeing how players respond when emotional honesty and institutional control pull them in different directions."
+      },
+      {
+        id: "the-donut",
+        title: "The Donut",
+        type: "3D Design · Solo Project",
+        short: "One donut, an unreasonable number of sprinkles, and a dive into procedural modeling. I used Blender's Geometry Nodes, custom materials, and animation tools to turn a simple shape into a detailed, colorful, animated creation.",
+        description: "The Donut started as a simple experiment: could I turn a basic torus into something that looked good enough to eat? Over the project, that simple shape picked up custom icing, procedurally placed sprinkles, varied materials, and animation. I used it as an opportunity to explore several parts of Blender, from modeling and shading to Geometry Nodes and keyframe animation. It was a small subject, but it gave me plenty of room to experiment.",
+        role: "Modeler, Animator",
+        team: "Solo",
+        tools: "Blender",
+        duration: "6 weeks",
+        tags: ["Blender", "3D Modeling", "Procedural Modeling", "Geometry Nodes", "Materials & Shading", "Animation", "Keyframing"],
+        art: "url('Images/The-Donut/Donut-Stage-5.png') center / cover no-repeat",
+        mark: "THE<br>DONUT",
+        video: "https://www.youtube.com/embed/WlH6VR3oNq0",
+        gallery: ['Images/The-Donut/Donut-Stage-1.png', 'Images/The-Donut/Donut-Stage-2.png', 'Images/The-Donut/Donut-Stage-3.png', 'Images/The-Donut/Donut-Stage-4.png', 'Images/The-Donut/Donut-Stage-5.png'],
+        resources: [],
+        challenge: "I wanted to see how much detail I could get out of a very simple starting shape, especially by using Blender's procedural tools instead of placing every little detail by hand. I also wanted to try animating the finished donut, using exaggerated movement and squash and stretch to give it a bit of personality.",
+        process: "I began with a torus, adjusting its proportions until it looked more like a donut. For the icing, I duplicated the upper part of the mesh and separated it so I could shape and texture it independently. Getting the drips to look right took some experimenting. Eventually, I realized my Proportional Editing influence was simply set too low, which explained why I wasn't getting the results I wanted.\n\nAfter that, I created separate materials for the dough and icing. I used Blender's Shader Editor to add procedural color variation and surface bumps, giving the model a less uniform, more baked appearance.\n\nThe sprinkles were my excuse to get properly stuck into Geometry Nodes. I used nodes to distribute points across the icing and instance sprinkle models on them. I made several variations, including an S-shaped sprinkle, then put them into a collection that the node setup could randomly choose from. I also made a shared material that assigned each sprinkle one of seven colors, so the finished result felt varied without me having to place and color every sprinkle individually.\n\nWith the model finished, I moved on to animation. I used Blender's auto-keyframing tools and tutorials from Blender Guru as references while creating a coin-flip-style animation, then tried a bouncing motion with squash and stretch. That second experiment helped give the donut a much more playful sense of weight and elasticity.",
+        outcome: "By the end, I had a fully modeled donut with custom icing, procedural sprinkles, materials, and a couple of animations. More importantly, I got to work through a range of Blender tools and see how they fit together, especially Geometry Nodes and procedural materials. I came away with a much better understanding of how procedural setups can add lots of visual variety without requiring every detail to be made by hand. I also had fun seeing how a little squash and stretch could give an otherwise ordinary object some personality. Those are techniques I’d like to keep using in future game projects."
+      }
+    ];
+
+    const grid = document.getElementById("project-grid");
+    const homePage = document.getElementById("home-page");
+    const projectPage = document.getElementById("project-page");
+    const detail = document.getElementById("project-detail");
+
+    function renderCards() {
+      grid.innerHTML = projects.map(project => `
+        <article class="project-card">
+          <a href="#${encodeURIComponent(project.id)}" aria-label="View ${escapeHTML(project.title)} project" style="text-decoration:none">
+            <div class="project-art" style="--art:${project.art}">
+            </div>
+            <div class="project-content">
+              <div class="meta">${escapeHTML(project.type)}</div>
+              <h3>${escapeHTML(project.title)}</h3>
+              <p>${escapeHTML(project.short)}</p>
+              <div class="card-bottom">
+                <div class="tags">${project.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join("")}</div>
+                <span class="text-link">Explore project ↗</span>
+              </div>
+            </div>
+          </a>
+        </article>
+      `).join("");
+    }
+
+    function renderFeaturedArt() {
+      const featured = projects.slice(0, 3);
+      document.getElementById("featured-art-grid").innerHTML = featured.map(project => `
+        <a class="featured-art" href="#${encodeURIComponent(project.id)}"
+           style="--art:${project.art}" aria-label="Explore ${escapeHTML(project.title)}">
+          <strong>${escapeHTML(project.title)}</strong>
+        </a>
+      `).join("");
+    }
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[char]));
+    }
+
+    function renderDetail(project) {
+      const media = project.video
+        ? `<iframe
+             class="video-frame"
+             src="${escapeHTML(project.video)}"
+             title="${escapeHTML(project.title)} gameplay video"
+             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+             allowfullscreen
+             loading="lazy"></iframe>`
+        : `<div class="media-placeholder">
+             <strong>Gameplay video goes here</strong>
+             <p>Add a YouTube embed URL to this project's video field.</p>
+           </div>`;
+    
+      const gallery = project.gallery && project.gallery.length
+        ? `<div class="gallery">
+             ${project.gallery.map(src => `
+               <img
+                 src="${escapeHTML(src)}"
+                 alt="${escapeHTML(project.title)} screenshot"
+                 loading="lazy">
+             `).join("")}
+           </div>`
+        : `<div class="media-placeholder empty-gallery">
+             Add screenshot file paths to this project's
+             <code>gallery</code> array to show images here.
+           </div>`;
+    
+      const resources = project.resources && project.resources.length
+        ? `
+          <section class="project-resources-section"
+                   aria-labelledby="resources-heading">
+            <h2 id="resources-heading">Project Resources</h2>
+            <p>Explore supporting documents and materials behind this project.</p>
+    
+            <div class="project-resources">
+              ${project.resources.map(resource => {
+                const isExternal = /^https?:\/\//i.test(resource.url);
+    
+                return `
+                  <a class="resource-link"
+                     href="${escapeHTML(resource.url)}"
+                     ${isExternal ? 'target="_blank" rel="noopener noreferrer"' : ''}>
+                    <div class="resource-info">
+                      <strong>${escapeHTML(resource.title || "Project resource")}</strong>
+                      <p>${escapeHTML(resource.description || "")}</p>
+                    </div>
+                    <span class="resource-type">
+                      ${escapeHTML(resource.type || "Open")} ↗
+                    </span>
+                  </a>
+                `;
+              }).join("")}
+            </div>
+          </section>
+        `
+        : "";
+    
+      detail.innerHTML = `
+        <div class="detail-hero">
+          <div class="eyebrow">${escapeHTML(project.type)}</div>
+          <h1>${escapeHTML(project.title)}</h1>
+          <p class="detail-description">${escapeHTML(project.description)}</p>
+          <div class="tags">
+            ${project.tags.map(tag => `
+              <span class="tag">${escapeHTML(tag)}</span>
+            `).join("")}
+          </div>
+        </div>
+    
+        <div class="detail-cover" style="--art:${project.art}"></div>
+    
+        <div class="detail-layout">
+          <div>
+            <div class="eyebrow">Take a look</div>
+            <h2>See it in action</h2>
+            ${media}
+    
+            <h2>About the project</h2>
+            <p>${escapeHTML(project.description)}</p>
+    
+            <h2>The challenge</h2>
+            <p>${escapeHTML(project.challenge)}</p>
+    
+            <h2>My process</h2>
+            <p class="process-text">${escapeHTML(project.process)}</p>
+    
+            <h2>Outcome &amp; reflection</h2>
+            <p>${escapeHTML(project.outcome)}</p>
+    
+            <h2>Gallery</h2>
+            ${gallery}
+    
+            ${resources}
+          </div>
+    
+          <aside class="detail-sidebar">
+            <h3>Project details</h3>
+            <dl>
+              <dt>My role</dt>
+              <dd>${escapeHTML(project.role)}</dd>
+    
+              <dt>Team</dt>
+              <dd>${escapeHTML(project.team)}</dd>
+    
+              <dt>Tools</dt>
+              <dd>${escapeHTML(project.tools)}</dd>
+    
+              <dt>Timeline</dt>
+              <dd>${escapeHTML(project.duration)}</dd>
+            </dl>
+    
+            <p style="margin-top:24px">
+              <a class="pill primary"
+                 href="mailto:lillinekothedev@gmail.com">
+                Curious about this project? ↗
+              </a>
+            </p>
+          </aside>
+        </div>
+      `;
+    }
+
+    function route() {
+      const hash = decodeURIComponent(location.hash.slice(1));
+      const project = projects.find(item => item.id === hash);
+      if (project) {
+        homePage.classList.add("hidden");
+        projectPage.classList.add("active");
+        renderDetail(project);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        projectPage.classList.remove("active");
+        homePage.classList.remove("hidden");
+        if (hash && hash !== "home" && hash !== "projects" && hash !== "about" && hash !== "contact") {
+          history.replaceState(null, "", "#home");
+        }
+      }
+    }
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+    renderCards();
+    renderFeaturedArt();
+    window.addEventListener("hashchange", route);
+    route();
+  </script>
+</body>
+</html>
